@@ -1,8 +1,8 @@
 //@author [Your Name Here]
-package JavaChatApp.server;
+package javachatapp.server;
 
-import JavaChatApp.shared.Message;
-import JavaChatApp.shared.Message.MessageType;
+import javachatapp.shared.Message;
+import javachatapp.shared.Message.MessageType;
 import java.io.*;
 import java.net.Socket;
 

@@ -1,5 +1,5 @@
 //@author [Your Name Here - Backend]
-package JavaChatApp.server;
+package javachatapp.server;
 
 /**
  * ServerGUI - Backend logic for server interface.

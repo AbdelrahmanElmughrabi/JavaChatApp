@@ -1,8 +1,8 @@
 //@author [Your Name Here - Backend]
-package JavaChatApp.client;
+package javachatapp.client;
 
-import JavaChatApp.shared.Message;
-import JavaChatApp.shared.Message.MessageType;
+import javachatapp.shared.Message;
+import javachatapp.shared.Message.MessageType;
 import java.util.ArrayList;
 import java.util.List;
 

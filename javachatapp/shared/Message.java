@@ -1,5 +1,5 @@
 //@author [Your Name Here]
-package JavaChatApp.shared;
+package javachatapp.shared;
 
 import java.io.Serializable;
 
