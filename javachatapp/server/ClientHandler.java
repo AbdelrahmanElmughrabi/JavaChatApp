@@ -34,11 +34,21 @@ public class ClientHandler implements Runnable {
             Message connectMsg = (Message) in.readObject();
             if (connectMsg.getType() == MessageType.CONNECT) {
                 username = connectMsg.getSender();
-                server.addClient(username, this);
-                System.out.println(username + " connected from " + socket.getInetAddress());
 
-                // Broadcast updated user list to all clients
-                server.broadcastUserList();
+                // Check if username is already taken
+                if (server.isUsernameTaken(username)) {
+                    System.err.println("Username " + username + " already exists! Rejecting connection.");
+                    // Send error message to client
+                    sendMessage(new Message(Message.MessageType.ERROR, "Server", username, "USERNAME_TAKEN"));
+                    // Don't add client or broadcast user list - client will retry with different username
+                    // Keep connection open for retry
+                } else {
+                    server.addClient(username, this);
+                    System.out.println(username + " connected from " + socket.getInetAddress());
+
+                    // Broadcast updated user list to all clients
+                    server.broadcastUserList();
+                }
 
                 // Listen for messages from this client
                 while (true) {

@@ -17,7 +17,8 @@ public class Message implements Serializable {
         TEXT,              // Regular chat message
         USER_LIST,         // Server sending list of connected users
         PRIVATE_MESSAGE,   // Direct message to specific user
-        BROADCAST          // Message to all users
+        BROADCAST,         // Message to all users
+        ERROR              // Error message from server
     }
 
     private MessageType type;

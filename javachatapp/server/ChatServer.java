@@ -78,15 +78,16 @@ public class ChatServer {
     }
 
     /**
+     * Check if a username is already taken
+     */
+    public synchronized boolean isUsernameTaken(String username) {
+        return clients.containsKey(username);
+    }
+
+    /**
      * Add a client to the server's client list
      */
     public synchronized void addClient(String username, ClientHandler handler) {
-        // Check if username already exists
-        if (clients.containsKey(username)) {
-            System.err.println("Username " + username + " already exists!");
-            // You might want to handle this differently (e.g., reject connection)
-            return;
-        }
         clients.put(username, handler);
         System.out.println("Client added: " + username + " (Total: " + clients.size() + ")");
     }

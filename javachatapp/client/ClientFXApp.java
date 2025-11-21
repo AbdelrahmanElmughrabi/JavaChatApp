@@ -206,8 +206,25 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         }
 
         this.username = name;
-        lastErrorCode = null;
 
+        // Check if we're retrying after USERNAME_TAKEN error
+        if ("USERNAME_TAKEN".equals(lastErrorCode) && clientBackend.isConnected()) {
+            // Already connected, just retry with new username
+            boolean retrySuccess = clientBackend.retryWithNewUsername(username);
+
+            if (!retrySuccess) {
+                showError("Retry Failed", "Unable to retry with new username.");
+                return;
+            }
+
+            // Wait for server response (either success or another error)
+            // The onError or successful connection will update the UI
+            lastErrorCode = null;
+            return;
+        }
+
+        // First connection attempt
+        lastErrorCode = null;
         boolean connected = clientBackend.connect(serverAddress, serverPort, username, this);
 
         if (!connected) {
@@ -216,9 +233,9 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
             return;
         }
 
-        // Connected successfully – open main chat window
-        primaryStage.setScene(chatScene);
-        primaryStage.setTitle("Java Chat Client - " + username);
+        // Connection established, but we need to wait for server to accept username
+        // If username is accepted, we'll transition to chat scene
+        // If username is taken, onError will be called
     }
 
     // ======================
@@ -356,6 +373,13 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
             if (userListView.getSelectionModel().getSelectedItem() == null) {
                 userListView.getSelectionModel().select("Broadcast");
             }
+
+            // If we're still on username scene, it means connection was successful (after retry)
+            // Transition to chat scene
+            if (primaryStage.getScene() == usernameScene) {
+                primaryStage.setScene(chatScene);
+                primaryStage.setTitle("Java Chat Client - " + username);
+            }
         });
     }
 
@@ -389,12 +413,8 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
             if ("USERNAME_TAKEN".equals(errorMessage)) {
                 showError("Username In Use", "This username is already taken. Please choose a different one.");
 
-                // Disconnect this temporary connection if still active
-                if (clientBackend != null && clientBackend.isConnected()) {
-                    clientBackend.disconnect();
-                }
-
-                // Return user to username scene (keep host/port filled)
+                // Don't disconnect - keep connection open for retry
+                // Just return user to username scene to enter a new name
                 primaryStage.setScene(usernameScene);
                 primaryStage.setTitle("Java Chat Client - Username");
             } else {

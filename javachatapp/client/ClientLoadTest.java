@@ -37,8 +37,8 @@ public class ClientLoadTest {
             public void onConnectionLost() {
                 System.out.println("Connection lost");
             }
-            
-           
+
+            @Override
             public void onError(String errorMessage) {
                 System.err.println("Error: " + errorMessage);
             }

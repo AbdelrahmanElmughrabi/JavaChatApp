@@ -30,6 +30,8 @@ public class ClientBackend {
         void onUserListUpdated(List<String> users);
 
         void onConnectionLost();
+
+        void onError(String errorCode);
     }
 
     public ClientBackend() {
@@ -74,6 +76,13 @@ public class ClientBackend {
                 public void onConnectionLost() {
                     if (messageHandler != null) {
                         messageHandler.onConnectionLost();
+                    }
+                }
+
+                @Override
+                public void onError(String errorCode) {
+                    if (messageHandler != null) {
+                        messageHandler.onError(errorCode);
                     }
                 }
             });
@@ -156,6 +165,26 @@ public class ClientBackend {
         } else {
             client.sendPrivateMessage(recipient, content);
         }
+    }
+
+    /**
+     * Retry connection with a new username (after USERNAME_TAKEN error)
+     * @param newUsername The new username to try
+     * @return true if retry successful, false otherwise
+     */
+    public boolean retryWithNewUsername(String newUsername) {
+        if (client == null || !client.isConnected()) {
+            System.err.println("Cannot retry - not connected to server");
+            return false;
+        }
+
+        if (!isValidUsername(newUsername)) {
+            System.err.println("Invalid username");
+            return false;
+        }
+
+        this.username = newUsername;
+        return client.retryWithNewUsername(newUsername);
     }
 
     /**

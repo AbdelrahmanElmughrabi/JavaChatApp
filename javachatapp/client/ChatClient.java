@@ -27,6 +27,7 @@ public class ChatClient {
     public interface MessageListener {
         void onMessageReceived(Message message);
         void onConnectionLost();
+        void onError(String errorCode);
     }
 
     public ChatClient(String serverAddress, int serverPort) {
@@ -76,6 +77,31 @@ public class ChatClient {
     }
 
     /**
+     * Retry connection with a new username (when previous username was taken)
+     * @param newUsername The new username to try
+     * @return true if retry message sent successfully, false otherwise
+     */
+    public boolean retryWithNewUsername(String newUsername) {
+        if (!connected) {
+            System.err.println("Cannot retry - not connected to server");
+            return false;
+        }
+
+        this.username = newUsername;
+
+        try {
+            // Send new CONNECT message with new username
+            Message connectMsg = new Message(MessageType.CONNECT, newUsername);
+            sendMessage(connectMsg);
+            System.out.println("Retrying connection with username: " + newUsername);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Failed to retry with new username: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Start a thread to listen for incoming messages
      */
     private void startMessageListener() {
@@ -84,7 +110,12 @@ public class ChatClient {
                 while (connected) {
                     Message message = (Message) in.readObject();
                     if (messageListener != null) {
-                        messageListener.onMessageReceived(message);
+                        // Check if this is an ERROR message
+                        if (message.getType() == MessageType.ERROR) {
+                            messageListener.onError(message.getContent());
+                        } else {
+                            messageListener.onMessageReceived(message);
+                        }
                     }
                 }
             } catch (EOFException e) {

@@ -97,6 +97,14 @@ public class JavaChatApp {
             public void onConnectionLost() {
                 System.out.println("\nConnection lost!");
             }
+
+            @Override
+            public void onError(String errorCode) {
+                System.out.println("\nError: " + errorCode);
+                if ("USERNAME_TAKEN".equals(errorCode)) {
+                    System.out.println("Username is already taken. Please try a different one.");
+                }
+            }
         });
 
         if (connected) {
