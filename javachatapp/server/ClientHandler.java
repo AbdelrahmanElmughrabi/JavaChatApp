@@ -16,6 +16,7 @@ public class ClientHandler implements Runnable {
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String username;
+    private boolean cleanedUp = false;
 
     public ClientHandler(Socket socket, ChatServer server) {
         this.socket = socket;
@@ -48,6 +49,10 @@ public class ClientHandler implements Runnable {
 
                     // Broadcast updated user list to all clients
                     server.broadcastUserList();
+
+                    // Notify all users that someone joined
+                    Message joinNotification = new Message(Message.MessageType.BROADCAST, "System", "Broadcast", username + " has joined the chat");
+                    server.broadcast(joinNotification);
                 }
 
                 // Listen for messages from this client
@@ -112,9 +117,20 @@ public class ClientHandler implements Runnable {
      * Cleanup resources and remove client from server
      */
     private void cleanup() {
+        // Prevent duplicate cleanup (can be called multiple times)
+        if (cleanedUp) {
+            return;
+        }
+        cleanedUp = true;
+
         try {
             if (username != null) {
                 server.removeClient(username);
+
+                // Notify all users that someone left
+                Message leaveNotification = new Message(Message.MessageType.BROADCAST, "System", "Broadcast", username + " has left the chat");
+                server.broadcast(leaveNotification);
+
                 server.broadcastUserList();
                 System.out.println(username + " removed from server");
             }

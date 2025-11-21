@@ -35,6 +35,16 @@ public class HostServer {
             serverThread.setDaemon(true);
             serverThread.start();
 
+            // Wait a short moment to see if the server actually started
+            // If port is in use, the server.start() will fail and set running to false
+            Thread.sleep(200);
+
+            // Check if server is actually running
+            if (!server.isRunning()) {
+                System.err.println("Failed to start server on port " + port);
+                return false;
+            }
+
             System.out.println("Server started successfully on port " + port);
             return true;
 

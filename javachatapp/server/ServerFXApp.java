@@ -129,14 +129,19 @@ public class ServerFXApp extends Application {
         stopButton.setDisable(false);
 
         startClientCountUpdater();
+
+        // Show success message
+        showInfo("Server Started", "Server successfully started on port " + port);
     }
 
     /**
      * Stop the server if it is running.
      */
     private void stopServer() {
+        boolean wasRunning = false;
         if (serverGUI != null && serverGUI.isServerRunning()) {
             serverGUI.stopServer();
+            wasRunning = true;
         }
 
         // Reset labels even if it wasn't running
@@ -146,6 +151,11 @@ public class ServerFXApp extends Application {
         startButton.setDisable(false);
         portField.setDisable(false);
         stopButton.setDisable(true);
+
+        // Show confirmation if server was actually running
+        if (wasRunning) {
+            showInfo("Server Stopped", "Server has been stopped successfully.");
+        }
     }
 
     /**
@@ -189,6 +199,17 @@ public class ServerFXApp extends Application {
      */
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    /**
+     * Show an information dialog with the given title and message.
+     */
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
