@@ -2,12 +2,11 @@
 package javachatapp.client;
 
 import javachatapp.shared.Message;
-import javachatapp.shared.Message.MessageType;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ClientGUI - Backend logic for client interface.
+ * ClientBackend - Backend logic for client interface.
  * The frontend developer will add JavaFX UI components.
  *
  * Backend responsibilities:
@@ -16,7 +15,7 @@ import java.util.List;
  * - Manage user list updates
  * - Handle incoming messages
  */
-public class ClientGUI {
+public class ClientBackend {
     private ChatClient client;
     private String username;
     private List<String> connectedUsers;
@@ -31,7 +30,7 @@ public class ClientGUI {
         void onConnectionLost();
     }
 
-    public ClientGUI() {
+    public ClientBackend() {
         this.connectedUsers = new ArrayList<>();
     }
 

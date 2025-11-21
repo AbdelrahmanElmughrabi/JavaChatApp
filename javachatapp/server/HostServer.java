@@ -2,7 +2,7 @@
 package javachatapp.server;
 
 /**
- * ServerGUI - Backend logic for server interface.
+ * HostServer - Backend logic for server interface.
  * The frontend developer will add JavaFX UI components.
  *
  * Backend responsibilities:
@@ -10,7 +10,7 @@ package javachatapp.server;
  * - Port validation
  * - Server instance management
  */
-public class ServerGUI {
+public class HostServer {
     private ChatServer server;
     private int currentPort;
 

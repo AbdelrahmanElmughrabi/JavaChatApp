@@ -1,6 +1,6 @@
 package javachatapp;
-import javachatapp.server.ServerGUI;
-import javachatapp.client.ClientGUI;
+import javachatapp.server.HostServer;
+import javachatapp.client.ClientBackend;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,12 +31,12 @@ public class JavaChatApp {
     }
 
     private static void runServer(Scanner scanner) {
-        ServerGUI serverGUI = new ServerGUI();
+        HostServer serverGUI = new HostServer();
 
         System.out.print("Enter port number (1024-65535): ");
         String portString = scanner.nextLine();
 
-        if (!ServerGUI.isValidPort(portString)) {
+        if (!HostServer.isValidPort(portString)) {
             System.out.println("Invalid port number");
             return;
         }
@@ -53,7 +53,7 @@ public class JavaChatApp {
     }
 
     private static void runClient(Scanner scanner) {
-        ClientGUI clientGUI = new ClientGUI();
+        ClientBackend clientGUI = new ClientBackend();
 
         System.out.print("Enter server address (e.g., localhost): ");
         String serverAddress = scanner.nextLine();
@@ -64,23 +64,23 @@ public class JavaChatApp {
         System.out.print("Enter your username: ");
         String username = scanner.nextLine();
 
-        if (!ClientGUI.isValidIP(serverAddress)) {
+        if (!ClientBackend.isValidIP(serverAddress)) {
             System.out.println("Invalid server address");
             return;
         }
 
-        if (!ClientGUI.isValidPort(portString)) {
+        if (!ClientBackend.isValidPort(portString)) {
             System.out.println("Invalid port number");
             return;
         }
 
-        if (!ClientGUI.isValidUsername(username)) {
+        if (!ClientBackend.isValidUsername(username)) {
             System.out.println("Invalid username (max 20 characters)");
             return;
         }
 
         int port = Integer.parseInt(portString);
-        boolean connected = clientGUI.connect(serverAddress, port, username, new ClientGUI.MessageHandler() {
+        boolean connected = clientGUI.connect(serverAddress, port, username, new ClientBackend.MessageHandler() {
             @Override
             public void onMessageReceived(String sender, String content) {
                 System.out.println("\n[" + sender + "]: " + content);
