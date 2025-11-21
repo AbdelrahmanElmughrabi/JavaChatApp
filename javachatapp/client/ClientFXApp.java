@@ -383,7 +383,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         
         Platform.runLater(() -> {
             if (manualDisconnect) {
-                // We disconnected on purpose – don't show scary popup
+                // We disconnected on purpose
                 manualDisconnect = false;
             } else {
                 showError("Connection Lost", "Connection to the server was lost.");

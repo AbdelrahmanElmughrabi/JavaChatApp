@@ -54,11 +54,13 @@ public class ChatClient {
             out.flush();
             in = new ObjectInputStream(socket.getInputStream());
 
+            // Set connected flag BEFORE sending CONNECT message
+            // (sendMessage() checks this flag)
+            connected = true;
+
             // Send CONNECT message with username
             Message connectMsg = new Message(MessageType.CONNECT, username);
             sendMessage(connectMsg);
-
-            connected = true;
 
             // Start listening for messages in a separate thread
             startMessageListener();
