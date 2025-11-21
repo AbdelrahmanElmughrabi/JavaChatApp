@@ -113,10 +113,16 @@ public class ChatServer {
 
     // Broadcast a message to all connected clients
     public void broadcast(Message message) {
+        String sender = message.getSender();
+        int sentCount = 0;
+
         for (ClientHandler handler : clients.values()) {
-            handler.sendMessage(message);
+            if (!handler.getUsername().equals(sender)) {
+                handler.sendMessage(message);
+                sentCount++;
+            }
         }
-        System.out.println("Broadcast message from " + message.getSender() + " to " + clients.size() + " clients");
+        System.out.println("Broadcast message from " + sender + " to " + sentCount + " clients");
     }
 
     // Send updated user list to all connected clients
