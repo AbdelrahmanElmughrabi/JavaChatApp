@@ -94,10 +94,16 @@ public class ChatClient {
                     System.err.println("Error receiving message: " + e.getMessage());
                 }
             } finally {
-                if (connected && messageListener != null) {
-                    messageListener.onConnectionLost();
-                }
+                // Save reference before disconnect() sets connected=false
+                MessageListener listener = messageListener;
+                boolean wasConnected = connected;
+
                 disconnect();
+
+                // Only notify if we were connected and have a listener
+                if (wasConnected && listener != null) {
+                    listener.onConnectionLost();
+                }
             }
         });
         listenerThread.setDaemon(true);

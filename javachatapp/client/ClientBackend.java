@@ -6,16 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ClientBackend - Backend logic for client interface.
- * The frontend developer will add JavaFX UI components.
+ * ClientBackend - Backend logic for client interface. The frontend developer
+ * will add JavaFX UI components.
  *
- * Backend responsibilities:
- * - Connect/disconnect functionality
- * - Send messages to other users or broadcast
- * - Manage user list updates
- * - Handle incoming messages
+ * Backend responsibilities: - Connect/disconnect functionality - Send messages
+ * to other users or broadcast - Manage user list updates - Handle incoming
+ * messages
  */
 public class ClientBackend {
+
     private ChatClient client;
     private String username;
     private List<String> connectedUsers;
@@ -25,8 +24,11 @@ public class ClientBackend {
      * Interface for handling UI updates (to be implemented by frontend)
      */
     public interface MessageHandler {
+
         void onMessageReceived(String sender, String content);
+
         void onUserListUpdated(List<String> users);
+
         void onConnectionLost();
     }
 
@@ -36,6 +38,7 @@ public class ClientBackend {
 
     /**
      * Connect to the server
+     *
      * @param serverAddress Server IP address
      * @param serverPort Server port
      * @param username Username for this client
@@ -133,6 +136,7 @@ public class ClientBackend {
 
     /**
      * Send a message to a specific user or broadcast
+     *
      * @param recipient Username of recipient (or "Broadcast" for all users)
      * @param content Message content
      */
@@ -187,6 +191,7 @@ public class ClientBackend {
 
     /**
      * Validate IP address format
+     *
      * @param ip IP address string
      * @return true if valid format, false otherwise
      */
@@ -220,6 +225,7 @@ public class ClientBackend {
 
     /**
      * Validate port number
+     *
      * @param portString Port as string
      * @return true if valid port number, false otherwise
      */
@@ -234,10 +240,12 @@ public class ClientBackend {
 
     /**
      * Validate username format
+     *
      * @param username Username to validate
      * @return true if valid, false otherwise
      */
     public static boolean isValidUsername(String username) {
         return username != null && !username.trim().isEmpty() && username.length() <= 20;
     }
+
 }

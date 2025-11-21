@@ -14,17 +14,6 @@ import java.util.List;
 
 /**
  * JavaFX frontend for the chat client.
- *
- * Responsibilities:
- * <ul>
- *     <li>Collect server address, port, and username from the user.</li>
- *     <li>Validate inputs using {@link ClientBackend} helper methods.</li>
- *     <li>Connect to the backend {@link ClientBackend}.</li>
- *     <li>Display the main chat UI (user list, chat history, message input).</li>
- *     <li>Update UI based on {@link ClientGUI.MessageHandler} callbacks.</li>
- * </ul>
- *
- * All networking and protocol logic is handled by {@link ClientBackend} and {@link ChatClient}.
  */
 public class ClientFXApp extends Application implements ClientBackend.MessageHandler {
 
@@ -47,7 +36,6 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     private TextField messageField;
     private Button sendButton;
     private boolean manualDisconnect = false;
-
 
     // Backend
     private ClientBackend clientBackend;
@@ -85,7 +73,6 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     // ======================
     //  STEP 1: HOST SCENE
     // ======================
-
     private Scene buildHostScene() {
         VBox root = new VBox(12);
         root.setPadding(new Insets(15));
@@ -128,7 +115,6 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     // ======================
     //  STEP 2: PORT SCENE
     // ======================
-
     private Scene buildPortScene() {
         VBox root = new VBox(12);
         root.setPadding(new Insets(15));
@@ -181,7 +167,6 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     // ==========================
     //  STEP 3: USERNAME SCENE
     // ==========================
-
     private Scene buildUsernameScene() {
         VBox root = new VBox(12);
         root.setPadding(new Insets(15));
@@ -239,63 +224,61 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     // ======================
     //  MAIN CHAT SCENE
     // ======================
-
     private Scene buildChatScene() {
 
-    BorderPane root = new BorderPane();
-    root.setPadding(new Insets(10));
+        BorderPane root = new BorderPane();
+        root.setPadding(new Insets(10));
 
-    // LEFT: user list
-    Label usersLabel = new Label("Users");
-    userListView = new ListView<>();
-    userListView.setPrefWidth(150);
+        // LEFT: user list
+        Label usersLabel = new Label("Users");
+        userListView = new ListView<>();
+        userListView.setPrefWidth(150);
 
-    // Default Broadcast entry so user can send immediately
-    userListView.getItems().setAll("Broadcast");
-    userListView.getSelectionModel().select("Broadcast");
+        // Default Broadcast entry so user can send immediately
+        userListView.getItems().setAll("Broadcast");
+        userListView.getSelectionModel().select("Broadcast");
 
-    VBox usersBox = new VBox(5, usersLabel, userListView);
-    usersBox.setPrefWidth(180);
-    VBox.setVgrow(userListView, Priority.ALWAYS);
-    root.setLeft(usersBox);
-    BorderPane.setMargin(usersBox, new Insets(0, 10, 0, 0));
+        VBox usersBox = new VBox(5, usersLabel, userListView);
+        usersBox.setPrefWidth(180);
+        VBox.setVgrow(userListView, Priority.ALWAYS);
+        root.setLeft(usersBox);
+        BorderPane.setMargin(usersBox, new Insets(0, 10, 0, 0));
 
-    // CENTER: chat area
-    Label chatLabel = new Label("Chat");
-    chatArea = new TextArea();
-    chatArea.setEditable(false);
-    chatArea.setWrapText(true);
+        // CENTER: chat area
+        Label chatLabel = new Label("Chat");
+        chatArea = new TextArea();
+        chatArea.setEditable(false);
+        chatArea.setWrapText(true);
 
-    VBox chatBox = new VBox(5, chatLabel, chatArea);
-    VBox.setVgrow(chatArea, Priority.ALWAYS);
-    root.setCenter(chatBox);
+        VBox chatBox = new VBox(5, chatLabel, chatArea);
+        VBox.setVgrow(chatArea, Priority.ALWAYS);
+        root.setCenter(chatBox);
 
-    // BOTTOM: message input + Send + Logout
-    messageField = new TextField();
-    messageField.setPromptText("Type a message and press Enter...");
-    HBox.setHgrow(messageField, Priority.ALWAYS);
+        // BOTTOM: message input + Send + Logout
+        messageField = new TextField();
+        messageField.setPromptText("Type a message and press Enter...");
+        HBox.setHgrow(messageField, Priority.ALWAYS);
 
-    sendButton = new Button("Send");
-    sendButton.setOnAction(e -> handleSendMessage());
+        sendButton = new Button("Send");
+        sendButton.setOnAction(e -> handleSendMessage());
 
-    // Enter key sends
-    messageField.setOnAction(e -> handleSendMessage());
+        // Enter key sends
+        messageField.setOnAction(e -> handleSendMessage());
 
-    Button logoutButton = new Button("Log Out");
-    logoutButton.setOnAction(e -> handleLogout());
+        Button logoutButton = new Button("Log Out");
+        logoutButton.setOnAction(e -> handleLogout());
 
-    HBox inputBox = new HBox(8);
-    inputBox.setAlignment(Pos.CENTER_LEFT);
-    inputBox.setPadding(new Insets(10, 0, 0, 0));
+        HBox inputBox = new HBox(8);
+        inputBox.setAlignment(Pos.CENTER_LEFT);
+        inputBox.setPadding(new Insets(10, 0, 0, 0));
 
-    // THIS is the critical part: three children in this *one* HBox
-    inputBox.getChildren().addAll(messageField, sendButton, logoutButton);
+        // THIS is the critical part: three children in this *one* HBox
+        inputBox.getChildren().addAll(messageField, sendButton, logoutButton);
 
-    root.setBottom(inputBox);
+        root.setBottom(inputBox);
 
-    return new Scene(root, 700, 500);
-}
-
+        return new Scene(root, 700, 500);
+    }
 
     private void handleSendMessage() {
         if (clientBackend == null || !clientBackend.isConnected()) {
@@ -347,7 +330,6 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     // ======================
     //  MessageHandler impl
     // ======================
-
     @Override
     public void onMessageReceived(String sender, String content) {
         // Called from network listener thread – wrap in Platform.runLater
@@ -380,7 +362,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
     @Override
     public void onConnectionLost() {
         System.out.println("DEBUG: onConnectionLost() called in FX client");
-        
+
         Platform.runLater(() -> {
             if (manualDisconnect) {
                 // We disconnected on purpose
@@ -399,7 +381,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
             userListView.getItems().clear();
         });
     }
-    
+
     public void onError(String errorMessage) {
         Platform.runLater(() -> {
             lastErrorCode = errorMessage;
@@ -422,11 +404,9 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         });
     }
 
-
     // ======================
     //  Helpers
     // ======================
-
     private void appendChatLine(String line) {
         if (chatArea == null) {
             // Should not happen once chatScene is active, but guard anyway
@@ -452,5 +432,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
      */
     public static void main(String[] args) {
         launch(args);
+
     }
+
 }

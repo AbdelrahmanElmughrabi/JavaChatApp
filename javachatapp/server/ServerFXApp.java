@@ -20,20 +20,6 @@ import javafx.util.Duration;
 
 /**
  * JavaFX frontend for the chat server.
- * <p>
- * Responsibilities:
- * <ul>
- *     <li>Provide a GUI to start/stop the server</li>
- *     <li>Validate the port input</li>
- *     <li>Display server status and number of connected clients</li>
- * </ul>
- *
- * Backend responsibilities (delegated to {@link HostServer}):
- * <ul>
- *     <li>Creating and managing the {@link ChatServer} instance</li>
- *     <li>Starting and stopping the listening thread</li>
- *     <li>Tracking connected clients</li>
- * </ul>
  */
 public class ServerFXApp extends Application {
 
