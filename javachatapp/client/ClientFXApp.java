@@ -70,9 +70,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         primaryStage.show();
     }
 
-    // ======================
     //  STEP 1: HOST SCENE
-    // ======================
     private Scene buildHostScene() {
         VBox root = new VBox(12);
         root.setPadding(new Insets(15));
@@ -112,9 +110,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         primaryStage.setTitle("Java Chat Client - Port");
     }
 
-    // ======================
     //  STEP 2: PORT SCENE
-    // ======================
     private Scene buildPortScene() {
         VBox root = new VBox(12);
         root.setPadding(new Insets(15));
@@ -164,9 +160,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         primaryStage.setTitle("Java Chat Client - Username");
     }
 
-    // ==========================
     //  STEP 3: USERNAME SCENE
-    // ==========================
     private Scene buildUsernameScene() {
         VBox root = new VBox(12);
         root.setPadding(new Insets(15));
@@ -238,9 +232,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         // If username is taken, onError will be called
     }
 
-    // ======================
     //  MAIN CHAT SCENE
-    // ======================
     private Scene buildChatScene() {
 
         BorderPane root = new BorderPane();
@@ -271,7 +263,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         VBox.setVgrow(chatArea, Priority.ALWAYS);
         root.setCenter(chatBox);
 
-        // BOTTOM: message input + Send + Logout
+        // Bottom: message input + Send + Logout
         messageField = new TextField();
         messageField.setPromptText("Type a message and press Enter...");
         HBox.setHgrow(messageField, Priority.ALWAYS);
@@ -288,8 +280,6 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         HBox inputBox = new HBox(8);
         inputBox.setAlignment(Pos.CENTER_LEFT);
         inputBox.setPadding(new Insets(10, 0, 0, 0));
-
-        // THIS is the critical part: three children in this *one* HBox
         inputBox.getChildren().addAll(messageField, sendButton, logoutButton);
 
         root.setBottom(inputBox);
@@ -344,9 +334,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         primaryStage.setTitle("Java Chat Client - Connect");
     }
 
-    // ======================
     //  MessageHandler impl
-    // ======================
     @Override
     public void onMessageReceived(String sender, String content) {
         // Called from network listener thread – wrap in Platform.runLater
@@ -424,9 +412,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         });
     }
 
-    // ======================
     //  Helpers
-    // ======================
     private void appendChatLine(String line) {
         if (chatArea == null) {
             // Should not happen once chatScene is active, but guard anyway
@@ -447,9 +433,7 @@ public class ClientFXApp extends Application implements ClientBackend.MessageHan
         alert.showAndWait();
     }
 
-    /**
-     * JavaFX entry point for launching the client GUI.
-     */
+    // JavaFX entry point for launching the client GUI.
     public static void main(String[] args) {
         launch(args);
 

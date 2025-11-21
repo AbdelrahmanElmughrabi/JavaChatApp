@@ -1,21 +1,20 @@
-//@author [Your Name Here - Backend]
 package javachatapp.server;
 
 /**
- * HostServer - Backend logic for server interface.
- * The frontend developer will add JavaFX UI components.
+ * HostServer - Backend logic for server interface. The frontend developer will
+ * add JavaFX UI components.
  *
- * Backend responsibilities:
- * - Start/stop server functionality
- * - Port validation
+ * Backend responsibilities: - Start/stop server functionality - Port validation
  * - Server instance management
  */
 public class HostServer {
+
     private ChatServer server;
     private int currentPort;
 
     /**
      * Start the server on the specified port
+     *
      * @param port The port number (should be 1024-65535)
      * @return true if started successfully, false otherwise
      */
@@ -54,9 +53,7 @@ public class HostServer {
         }
     }
 
-    /**
-     * Stop the running server
-     */
+    // Stop the running server
     public void stopServer() {
         if (server != null && server.isRunning()) {
             server.stop();
@@ -64,29 +61,22 @@ public class HostServer {
         }
     }
 
-    /**
-     * Check if server is currently running
-     */
+    // Check if server is currently running
     public boolean isServerRunning() {
         return server != null && server.isRunning();
     }
 
-    /**
-     * Get current port number
-     */
     public int getCurrentPort() {
         return currentPort;
     }
 
-    /**
-     * Get number of connected clients
-     */
     public int getClientCount() {
         return server != null ? server.getClientCount() : 0;
     }
 
     /**
      * Validate port number
+     *
      * @param portString String to validate
      * @return true if valid port number, false otherwise
      */

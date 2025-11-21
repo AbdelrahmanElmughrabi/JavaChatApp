@@ -1,4 +1,5 @@
 package javachatapp;
+
 import javachatapp.server.HostServer;
 import javachatapp.client.ClientBackend;
 import java.util.List;
@@ -6,6 +7,7 @@ import java.util.Scanner;
 
 /**
  * Console-based launcher for testing the backend
+ *
  * @author Abdelrahman
  */
 public class JavaChatApp {

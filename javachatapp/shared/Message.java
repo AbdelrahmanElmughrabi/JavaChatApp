@@ -1,4 +1,3 @@
-//@author [Your Name Here]
 package javachatapp.shared;
 
 import java.io.Serializable;
@@ -8,16 +7,17 @@ import java.io.Serializable;
  * Supports different message types for various chat operations.
  */
 public class Message implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     // Message types
     public enum MessageType {
-        CONNECT,           // Client connecting with username
-        DISCONNECT,        // Client disconnecting
-        TEXT,              // Regular chat message
-        USER_LIST,         // Server sending list of connected users
-        PRIVATE_MESSAGE,   // Direct message to specific user
-        BROADCAST,         // Message to all users
+        CONNECT, // Client connecting with username
+        DISCONNECT, // Client disconnecting
+        TEXT, // Regular chat message
+        USER_LIST, // Server sending list of connected users
+        PRIVATE_MESSAGE, // Direct message to specific user
+        BROADCAST, // Message to all users
         ERROR              // Error message from server
     }
 
@@ -91,11 +91,11 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "type=" + type +
-                ", sender='" + sender + '\'' +
-                ", recipient='" + recipient + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+        return "Message{"
+                + "type=" + type
+                + ", sender='" + sender + '\''
+                + ", recipient='" + recipient + '\''
+                + ", content='" + content + '\''
+                + '}';
     }
 }

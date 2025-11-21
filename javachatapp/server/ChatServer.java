@@ -1,4 +1,3 @@
-//@author [Your Name Here]
 package javachatapp.server;
 
 import javachatapp.shared.Message;
@@ -10,10 +9,11 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ChatServer handles multiple client connections and routes messages between them.
- * Uses thread-per-client model via ClientHandler.
+ * ChatServer handles multiple client connections and routes messages between
+ * them. Uses thread-per-client model via ClientHandler.
  */
 public class ChatServer {
+
     private int port;
     private ServerSocket serverSocket;
     private final ConcurrentHashMap<String, ClientHandler> clients;
@@ -25,9 +25,7 @@ public class ChatServer {
         this.running = false;
     }
 
-    /**
-     * Start the server and listen for client connections
-     */
+    // Start the server and listen for client connections
     public void start() {
         try {
             serverSocket = new ServerSocket(port);
@@ -57,9 +55,7 @@ public class ChatServer {
         }
     }
 
-    /**
-     * Stop the server and close all connections
-     */
+    // Stop the server and close all connections
     public void stop() {
         running = false;
         try {
@@ -77,33 +73,25 @@ public class ChatServer {
         }
     }
 
-    /**
-     * Check if a username is already taken
-     */
+    // Check if a username is already taken
     public synchronized boolean isUsernameTaken(String username) {
         return clients.containsKey(username);
     }
 
-    /**
-     * Add a client to the server's client list
-     */
+    //  Add a client to the server's client list
     public synchronized void addClient(String username, ClientHandler handler) {
         clients.put(username, handler);
         System.out.println("Client added: " + username + " (Total: " + clients.size() + ")");
     }
 
-    /**
-     * Remove a client from the server's client list
-     */
+    // Remove a client from the server's client list
     public synchronized void removeClient(String username) {
         if (clients.remove(username) != null) {
             System.out.println("Client removed: " + username + " (Total: " + clients.size() + ")");
         }
     }
 
-    /**
-     * Route a message to the appropriate recipient(s)
-     */
+    //Route a message to the appropriate recipient(s)
     public void routeMessage(Message message) {
         String recipient = message.getRecipient();
 
@@ -123,9 +111,7 @@ public class ChatServer {
         }
     }
 
-    /**
-     * Broadcast a message to all connected clients
-     */
+    // Broadcast a message to all connected clients
     public void broadcast(Message message) {
         for (ClientHandler handler : clients.values()) {
             handler.sendMessage(message);
@@ -133,9 +119,7 @@ public class ChatServer {
         System.out.println("Broadcast message from " + message.getSender() + " to " + clients.size() + " clients");
     }
 
-    /**
-     * Send updated user list to all connected clients
-     */
+    // Send updated user list to all connected clients
     public void broadcastUserList() {
         ArrayList<String> usernames = new ArrayList<>(clients.keySet());
         String[] userArray = usernames.toArray(new String[0]);
@@ -145,23 +129,16 @@ public class ChatServer {
         System.out.println("User list broadcast: " + usernames);
     }
 
-    /**
-     * Get the current port
-     */
+    // Get the current port
     public int getPort() {
         return port;
     }
 
-    /**
-     * Check if server is running
-     */
+    // Check if server is running
     public boolean isRunning() {
         return running;
     }
 
-    /**
-     * Get number of connected clients
-     */
     public int getClientCount() {
         return clients.size();
     }

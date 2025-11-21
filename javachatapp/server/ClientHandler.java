@@ -1,4 +1,3 @@
-//@author [Your Name Here]
 package javachatapp.server;
 
 import javachatapp.shared.Message;
@@ -7,10 +6,11 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * ClientHandler manages communication with a single connected client.
- * Each client gets its own thread via this Runnable implementation.
+ * ClientHandler manages communication with a single connected client. Each
+ * client gets its own thread via this Runnable implementation.
  */
 public class ClientHandler implements Runnable {
+
     private final Socket socket;
     private final ChatServer server;
     private ObjectOutputStream out;
@@ -42,6 +42,7 @@ public class ClientHandler implements Runnable {
                     // Send error message to client
                     sendMessage(new Message(Message.MessageType.ERROR, "Server", username, "USERNAME_TAKEN"));
                     // Don't add client or broadcast user list - client will retry with different username
+
                     // Keep connection open for retry
                 } else {
                     server.addClient(username, this);
@@ -73,9 +74,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Handles incoming messages from the client
-     */
+    // Handles incoming messages from the client
     private void handleMessage(Message message) {
         switch (message.getType()) {
             case DISCONNECT:
@@ -98,9 +97,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Sends a message to this client
-     */
+    //Sends a message to this client
     public void sendMessage(Message message) {
         try {
             if (out != null) {
@@ -113,9 +110,7 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /**
-     * Cleanup resources and remove client from server
-     */
+    // Cleanup resources and remove client from server
     private void cleanup() {
         // Prevent duplicate cleanup (can be called multiple times)
         if (cleanedUp) {
@@ -134,9 +129,15 @@ public class ClientHandler implements Runnable {
                 server.broadcastUserList();
                 System.out.println(username + " removed from server");
             }
-            if (in != null) in.close();
-            if (out != null) out.close();
-            if (socket != null && !socket.isClosed()) socket.close();
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
         } catch (IOException e) {
             System.err.println("Error during cleanup: " + e.getMessage());
         }

@@ -95,9 +95,7 @@ public class ServerFXApp extends Application {
         return root;
     }
 
-    /**
-     * Attempt to start the server using the port in the text field.
-     */
+    // Attempt to start the server using the port in the text field.
     private void startServer() {
         String portText = portField.getText() != null
                 ? portField.getText().trim()
@@ -134,9 +132,7 @@ public class ServerFXApp extends Application {
         showInfo("Server Started", "Server successfully started on port " + port);
     }
 
-    /**
-     * Stop the server if it is running.
-     */
+    // Stop the server if it is running.
     private void stopServer() {
         boolean wasRunning = false;
         if (serverGUI != null && serverGUI.isServerRunning()) {
@@ -172,9 +168,7 @@ public class ServerFXApp extends Application {
         clientCountTimeline.play();
     }
 
-    /**
-     * Stop the Timeline that updates the client count (if any).
-     */
+    // Stop the Timeline that updates the client count (if any).
     private void stopClientCountUpdater() {
         if (clientCountTimeline != null) {
             clientCountTimeline.stop();
@@ -182,9 +176,7 @@ public class ServerFXApp extends Application {
         }
     }
 
-    /**
-     * Read the client count from the backend and update the label.
-     */
+    // Read the client count from the backend and update the label.
     private void updateClientCountLabel() {
         if (serverGUI != null && serverGUI.isServerRunning()) {
             int clientCount = serverGUI.getClientCount();
@@ -194,9 +186,7 @@ public class ServerFXApp extends Application {
         }
     }
 
-    /**
-     * Show an error dialog with the given title and message.
-     */
+    // Show an error dialog with the given title and message.
     private void showError(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -205,9 +195,7 @@ public class ServerFXApp extends Application {
         alert.showAndWait();
     }
 
-    /**
-     * Show an information dialog with the given title and message.
-     */
+    // Show an information dialog with the given title and message.
     private void showInfo(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -216,9 +204,7 @@ public class ServerFXApp extends Application {
         alert.showAndWait();
     }
 
-    /**
-     * JavaFX entry point.
-     */
+    // JavaFX entry point.
     public static void main(String[] args) {
         launch(args);
     }
